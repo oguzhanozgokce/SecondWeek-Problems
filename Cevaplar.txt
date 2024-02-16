@@ -80,8 +80,48 @@ class User {
 
 ------------------------------------------------------------------------------------------------------------------------------------
 7-) Bir değişkeni nullable yapmak için ne yapmalıyız?
+
+-Bir degiskene null deger atamak icin ? isareti kullanilir.
+-Eger bir degiskene tip verilmez e direkt null deger atanirsa, IDE Type Inference yapar ve degiskenin degerini Nothing? olarak belirler.
+    val name: String? = null
+
+------------------------------------------------------------------------------------------------------------------------------------
 8-) "Null Güvenliği" (Null Safety) kavramını açıklayın.
+-(Null Safety), bir programlama dilinin null referans hatalarını önleme mekanizmasını ifade eder.
+-Null referans hatası, bir değişkenin null değerini referans alması ve bu değişken üzerinde bir işlem yapılmaya çalışıldığında ortaya çıkar.
+-Bu tür hatalar, çalışma zamanında çökme gibi beklenmedik davranışlara yol açabilir
+
+------------------------------------------------------------------------------------------------------------------------------------
 9-) Bir değişkene null değer atanır ve tip belirtilmezse Kotlin bu değişkeni nasıl yorumlar?
+-Eger bir degiskene tip verilmez e direkt null deger atanirsa, IDE Type Inference yapar ve degiskenin degerini Nothing? olarak belirler.
+val number : Nothing? = null    // Nothing?
+    val sum = null     // Nothing?
+
+------------------------------------------------------------------------------------------------------------------------------------
 10-) İlkel bir değişkenin nullable olması ile null değer alamaması arasında bellek yönetimi açısından nasıl farklar vardır?
+
+-Nullable olması bellekte daha fazla alan kaplar. Çünkü null bilgisini tutacağı bir alan olmalıdır.
+    val number: Int? = null  // nullable
+    val number: Int = null   // null alamaz
+
+------------------------------------------------------------------------------------------------------------------------------------
 11-) Nullable bir değişkenin bir değere sahip olması ile null olması arasında bellek yönetimi açısından nasıl bir fark vardır? Null değer almış bir değişken bellekte yer kaplamaz diyebilir miyiz?
+
+    -Bir değişkenin null olması durumunda, bu değişkenin bellekte bir referansı olacaktır.
+    -Bu referans, null değerini temsil eder ve bu referansın bellekte bir alan kapladığını söyleyebiliriz.
+
+------------------------------------------------------------------------------------------------------------------------------------
 12-) Nullable bir değişkenle çalışırken hangi operatörleri kullanırız? Bu operatörlerin kullanım farkları nelerdir? Hangisini ne zaman kullanmak daha anlamlıdır?
+
+    val result : Int? = 0
+    result?.plus(5)
+    result!!.plus(5)
+
+   *  result?.plus(5)  - > ?. anlamı: result degeri Null olabilir ama sonradan baska deger atandıysa bu kod calıssın.
+   *                          eger result null ise kodu calıstırmaz.
+   *  result!!.plus(5) - > anlamı: result degeri null olamayacagını garanti ederiz.  Null olursa exception fırlatır.
+   *
+   *  Kritik islerde !! kullanmak gerekir.(Banka kredi hesaplaması)
+
+------------------------------------------------------------------------------------------------------------------------------------
+
