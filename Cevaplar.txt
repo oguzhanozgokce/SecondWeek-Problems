@@ -1,0 +1,87 @@
+Temel Türler & Null Güvenliği
+
+------------------------------------------------------------------------------------------------------------------------------------
+1-) val ile var arasındaki fark nedir?
+
+-var "mutable" (değiştirilebilir) değişkenler için kullanılır.
+-val "immutable" (değiştirilemez) değişkenler için kullanılır
+-val için genelde inMutable degisken denir. Yani degeri degistirilemez. Fakat bu yanlis bir tanimdir.
+-Dogrusu read-only degiskenlerdir. Yani ilk deger atamasından sonra tekrar deger atanamaz.
+
+------------------------------------------------------------------------------------------------------------------------------------
+2-) Bir var değişkeni val gibi davranmasını nasıl sağlayabiliriz val kelimesini kullanmadan? Bunu neden yapmak isteriz? Örnek bir senaryo verin.
+
+-val gibi davranmasını saglamak icin private set kullanilir.
+
+class User {
+    var isMale = true
+        private set // isMale değişkeninin değeri sınıf dışından değiştirilemez.
+
+    fun updateGender(isMale: Boolean) {
+        // Belirli koşullar doğrultusunda cinsiyet güncellemesi yapılabilir.
+        // Örneğin, kullanıcıdan onay alındıktan sonra cinsiyet güncelleniyor olabilir.
+        if (checkUserConsent()) { // checkUserConsent, kullanıcının onayını kontrol eden kurgusal bir metod.
+            this.isMale = isMale
+        }
+    }
+
+    private fun checkUserConsent(): Boolean {
+        // Kullanıcı onayı kontrolü yapılır.
+        // Gerçek bir uygulamada, bu, kullanıcı arayüzünden bir onay almayı gerektirebilir.
+        return true // Örnek amaçlı her zaman true döndürüldü.
+    }
+}
+-Bu senaryoda, User sinifimiz var ve bu sinifin kullanicalarin cinsiyetini(isMale) tutmasını istiyoruz.
+  Ancak, kullanici cinsiyetini sinif disindan rastgele degistirebilmelerini istemiyoruz.
+-Bunun yerine, cinsiyet degiskenini belirli bir metot ile belirli kosullar altında degistirilmesini istiyoruz.
+  Bu, kullanıcının cinsiyetinin yanlışlıkla değiştirilmesini önler ve veri bütünlüğünü korur.
+
+-Bu senaryoda, isMale değişkeni sınıf dışından doğrudan değiştirilemez, ancak updateGender metodunu kullanarak kontrol edilen bir şekilde güncellenebilir.
+-Bu yaklaşım, sınıfın nasıl kullanılacağı üzerinde daha fazla kontrol sağlar ve yanlış kullanımı önler.
+
+------------------------------------------------------------------------------------------------------------------------------------
+3-) "Değişmez" (Immutable) ve "Salt Okunur" (ReadOnly) kavramlarını açıklayın. val değişkenler neden aslında "değişmez" değil de "salt okunur" olarak açıklanmalıdır?
+
+-Immutable: Değiştirilemez anlamına gelir. Yani, bir kez atanan değer değiştirilemez.
+-ReadOnly: Bir degiskenin ve nesnenin sadece okunabilir oldugunu belirtir.ancak programın çalışması sırasında değiştirilemediği anlamına gelir.
+    Ancak, bu, nesnenin içindeki diğer nesnelerin değiştirilemez olduğu anlamına gelmez.
+
+-> val ile tanımlanan bir değişkene atanan nesne, değişkenin kendisi yeniden atanamaz; yani değişkenin referansı değişmez.
+    Ancak, bu atanan nesnenin kendisi değişmez (immutable) olmak zorunda değildir.
+    Örnek: val ile liste tanımlandığında, bu liste değişkene başka bir liste atanamaz, fakat listeye eleman eklemek veya listeden eleman çıkarmak mümkündür.
+        Bu durumda listenin referansı değişmez(salt okunur), fakat listenin içeriği değişebilir.
+
+------------------------------------------------------------------------------------------------------------------------------------
+4-) "Tip Çıkarımı" (Type inference) kavramını açıklayın. Hangi durumlarda tip belirtmek kesin olarak gereklidir?
+
+-Degiskenin tipini belirtmeden, degiskenin degerine gore IDE'nin  tipini belirlemesidir.
+-Degiskenin tipini belirtmek kesin olarak gereklidir:
+
+    - Degiskenin ilk degeri yoksa, IDE degiskenin tipini belirleyemez.
+             var isim: String
+
+    - Fonksiyonların parametreleri ve dönüş değerleri için tip belirtmek genellikle zorunludur
+            fun topla(a: Int, b: Int): Int {
+                return a + b
+            }
+    - Genel (Generic) Tip Parametreleri
+
+------------------------------------------------------------------------------------------------------------------------------------
+5-) Kotlin'de tüm değişkenlerin sınıf olarak bulunması, "ilkel tip" (primitive type) olmadıkları anlamına gelir mi? Arka planda neler oluyor?
+
+ * Class gibi gözüken primitive tiplerde özel optimazyonla byte code cevriliyor.
+ * val age: Int = 25  arka planda java da int e cevriliyor.
+ * Not: Bu tip dönüsümü degildir.
+
+------------------------------------------------------------------------------------------------------------------------------------
+6-) "Tip Güvenliği" (Type Safety) kavramını açıklayın.
+
+-Programlama dilinin hatalı veya uyumsuz tip kullanımını önleyerek çalışma zamanı hatalarını azaltma yeteneğidir.
+
+------------------------------------------------------------------------------------------------------------------------------------
+7-) Bir değişkeni nullable yapmak için ne yapmalıyız?
+8-) "Null Güvenliği" (Null Safety) kavramını açıklayın.
+9-) Bir değişkene null değer atanır ve tip belirtilmezse Kotlin bu değişkeni nasıl yorumlar?
+10-) İlkel bir değişkenin nullable olması ile null değer alamaması arasında bellek yönetimi açısından nasıl farklar vardır?
+11-) Nullable bir değişkenin bir değere sahip olması ile null olması arasında bellek yönetimi açısından nasıl bir fark vardır? Null değer almış bir değişken bellekte yer kaplamaz diyebilir miyiz?
+12-) Nullable bir değişkenle çalışırken hangi operatörleri kullanırız? Bu operatörlerin kullanım farkları nelerdir? Hangisini ne zaman kullanmak daha anlamlıdır?
